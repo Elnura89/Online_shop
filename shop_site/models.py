@@ -61,7 +61,23 @@ class Products(models.Model):
     barcode = models.CharField(max_length=250)
     categoryObject = models.ForeignKey(Category, on_delete=models.CASCADE)
     brandObject = models.ForeignKey(Brands, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class ProductsImages(models.Model):
     productObject = models.ForeignKey(Products, on_delete=models.CASCADE)
     image = models.ImageField()
+
+class ProductsLikes(models.Model):
+    productObject = models.ForeignKey(Products, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+
+class ProductsRaitings(models.Model):
+    productObject = models.ForeignKey(Products, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    points = models.IntegerField()

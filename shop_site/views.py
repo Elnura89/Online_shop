@@ -9,6 +9,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import ListView, DetailView
 from django.core.paginator import Paginator 
+from django.http import HttpResponseBadRequest
+from django.http import HttpResponse
+from django.contrib.auth import login, logout
+
 
 
 from django.views.generic import TemplateView
@@ -134,4 +138,46 @@ def shopPage(request):
         'previous_page': previous_page,
     }
     return render(request, 'shop.html', context)
+
+def pressLike(request, id):
+
+    if not (request.method == 'POST'):
+        return HttpResponseBadRequest('Такой страницы нет')
+    
+    if not(request.user.is_authenticated):
+        return HttpResponseBadRequest('Пользователь не авторизован')
+    
+    product = Products.objects.get(id=id)
+    user = request.user
+
+    isLiked = ProductsLikes.objects.filter(productObject = product, author = user).exists()
+
+    if isLiked:
+        return HttpResponseBadRequest('Вы уже нажимали кнопку лайк')
+
+    ProductsLikes.objects.create(productObject = product, author = user)
+    return HttpResponse("Лайк принят", status = 200)
+
+def setRating(request):
+
+    if not (request.method == 'POST'):
+        return HttpResponseBadRequest('Такой страницы нет')
+    
+    if not(request.user.is_authenticated):
+        return HttpResponseBadRequest('Пользователь не авторизован')
+    
+    user = request.user
+    
+    points = int(request.POST.get('points'))
+    id = int(request.POST.get('id'))
+
+    product = Products.objects.get(id=id)
+
+    isLiked = ProductsRaitings.objects.filter(productObject = product, author = user).exists()
+        
+    if isLiked:
+        return HttpResponseBadRequest('Вы уже поставили оценку')
+    
+    ProductsLikes.objects.create(productObject = product, author = user)
+    return HttpResponse("Оценка принята", status = 200)
 

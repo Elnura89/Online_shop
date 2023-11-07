@@ -17,13 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.urls import path
-# from news_app.views import *
 from django.conf.urls.static import static
 from django.conf import settings
 from shop_site.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('accounts.urls')),
     path('', Index.as_view(), name='index'),
     path('contact/', ContactsViews.as_view(), name='contact'),
     path('about/', about, name='about'),
