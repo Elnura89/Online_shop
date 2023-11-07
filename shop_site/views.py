@@ -29,7 +29,9 @@ class Index(TemplateView):
         
         for index, value in enumerate(category):
             products = Products.objects.all().filter(categoryObject=value)[:10]
+            # print(len(products), value.name)
             category[index].products = products
+            # print(len(category[index].products))
         
         context['category']=category
 
@@ -181,3 +183,9 @@ def setRating(request):
     ProductsLikes.objects.create(productObject = product, author = user)
     return HttpResponse("Оценка принята", status = 200)
 
+def e_mails(request):
+    rows = E_mails.objects.all() 
+    context = {
+        'rows': rows
+    }
+    return render(request, 'index.html', context)

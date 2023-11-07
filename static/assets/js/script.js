@@ -534,6 +534,9 @@ var swiper2 = new Swiper(".product__media--preview", {
 
 // tab activation
 const tab = function () {
+  try{
+
+  
   const tabList = document.querySelectorAll('[data-toggle="tab"]');
   tabList.forEach(function (list) {
     list.addEventListener("click", function () {
@@ -557,6 +560,8 @@ const tab = function () {
       });
     });
   });
+}
+catch{}
 };
 tab();
 

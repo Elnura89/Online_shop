@@ -81,3 +81,6 @@ class ProductsRaitings(models.Model):
         on_delete=models.CASCADE,
     )
     points = models.IntegerField()
+
+class E_mails (models.Model):
+    e_mail = models.CharField(max_length=250)
