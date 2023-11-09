@@ -82,5 +82,5 @@ class ProductsRaitings(models.Model):
     )
     points = models.IntegerField()
 
-class E_mails (models.Model):
-    e_mail = models.CharField(max_length=250)
+class Subscriptions(models.Model):
+    mail = models.TextField(max_length=250)

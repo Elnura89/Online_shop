@@ -613,10 +613,11 @@
                                 </svg>
                             </h2>
                             <div class="footer__newsletter footer__widget--inner">
-                                <p class="footer__newsletter--desc">{{e_mail}}</p>
-                                <form class="newsletter__subscribe--form__style position__relative" action="#">
+                                <p class="footer__newsletter--desc"></p>
+                                <form method='post' action="{% url 'mail' %}" class="newsletter__subscribe--form__style position__relative" >
+                                    {% csrf_token %}
                                     <label>
-                                        <input class="footer__newsletter--input newsletter__subscribe--input" placeholder="Enter your email address" type="email">
+                                        <input name='mail' class="footer__newsletter--input newsletter__subscribe--input" placeholder="Enter your email address" type="email">
                                     </label>
                                     <button class="footer__newsletter--button newsletter__subscribe--button primary__btn" type="submit">Subscribe
                                         <svg class="newsletter__subscribe--button__icon" xmlns="http://www.w3.org/2000/svg" width="9.159" height="7.85" viewBox="0 0 9.159 7.85">
@@ -954,6 +955,8 @@
 
   <!-- Customscript js -->
   <script src="{% static 'assets/js/script.js' %}" defer="defer"></script>
+
+  <script src="{% static 'index.js' %}"></script>
   
 </body>
 </html>

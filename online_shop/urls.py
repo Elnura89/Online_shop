@@ -31,6 +31,8 @@ urlpatterns = [
     path('product-details/<int:id>', productDetails, name='productDetails'),
     path('blog-details/<int:id>', blogDetails, name='blogDetails'),
     path('shop/', shopPage, name='shopPage'),
+    path('mail/', saveMail, name='mail'),
+    path('pressLike/<int:id>', pressLike, name='pressLike'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL,

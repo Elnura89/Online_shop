@@ -1,5 +1,5 @@
 from typing import Any
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth import get_user_model 
 User = get_user_model() 
@@ -183,9 +183,7 @@ def setRating(request):
     ProductsLikes.objects.create(productObject = product, author = user)
     return HttpResponse("Оценка принята", status = 200)
 
-def e_mails(request):
-    rows = E_mails.objects.all() 
-    context = {
-        'rows': rows
-    }
-    return render(request, 'index.html', context)
+def saveMail(request):
+    mail = request.POST.get('mail')
+    Subscriptions.objects.create(mail=mail) 
+    return redirect('index')
