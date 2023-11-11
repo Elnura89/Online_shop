@@ -12,6 +12,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponseBadRequest
 from django.http import HttpResponse
 from django.contrib.auth import login, logout
+from django.db.models import Avg
 
 
 
@@ -88,9 +89,16 @@ def productDetails(request, id):
     row = Products.objects.get(id=id)
 
     images = ProductsImages.objects.filter(productObject = row)
+
+    points = ProductsRaitings.objects.filter(productObject = row).aggregate(Avg('points'))['points__avg']
+
+    likesCount = ProductsLikes.objects.filter(productObject = row).count()
+
     context = {
         'row':row,
-        'images':images
+        'images':images,
+        'likesCount': likesCount,
+        'points': points,
     }
     return render (request, 'product-details.html', context)
 
@@ -155,35 +163,51 @@ def pressLike(request, id):
     isLiked = ProductsLikes.objects.filter(productObject = product, author = user).exists()
 
     if isLiked:
-        return HttpResponseBadRequest('Вы уже нажимали кнопку лайк')
+        row = ProductsLikes.objects.get(productObject = product, author = user)
+        row.delete()
+        print('test')
+        return HttpResponseBadRequest('Вы уже нажимали кнопку лайк', status = 404)
 
     ProductsLikes.objects.create(productObject = product, author = user)
     return HttpResponse("Лайк принят", status = 200)
 
 def setRating(request):
 
-    if not (request.method == 'POST'):
-        return HttpResponseBadRequest('Такой страницы нет')
+    # if not (request.method == 'POST'):
+    #     return HttpResponseBadRequest('Такой страницы нет')
     
     if not(request.user.is_authenticated):
         return HttpResponseBadRequest('Пользователь не авторизован')
     
     user = request.user
     
-    points = int(request.POST.get('points'))
-    id = int(request.POST.get('id'))
+    points = int(request.GET.get('points'))
+    id = int(request.GET.get('id'))
+    print(id, points)
 
     product = Products.objects.get(id=id)
 
     isLiked = ProductsRaitings.objects.filter(productObject = product, author = user).exists()
         
     if isLiked:
-        return HttpResponseBadRequest('Вы уже поставили оценку')
+        row = ProductsRaitings.objects.get(productObject = product, author = user)
+        row.points == points
+        row.save()
+        return HttpResponse("Оценка принята", status = 200)
     
-    ProductsLikes.objects.create(productObject = product, author = user)
+    ProductsRaitings.objects.create(productObject = product, author = user, points=points)
     return HttpResponse("Оценка принята", status = 200)
 
 def saveMail(request):
     mail = request.POST.get('mail')
     Subscriptions.objects.create(mail=mail) 
     return redirect('index')
+
+# def Buscet(request):
+#     
+#     
+#     return render(request) 
+
+# def myAccount(request):
+#     
+#     return render(request)   

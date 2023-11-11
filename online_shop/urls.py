@@ -33,6 +33,8 @@ urlpatterns = [
     path('shop/', shopPage, name='shopPage'),
     path('mail/', saveMail, name='mail'),
     path('pressLike/<int:id>', pressLike, name='pressLike'),
+    path('setRating/', setRating, name='setRating'),
+    # path('myAccount/', myAccount, name='myAccount'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL,

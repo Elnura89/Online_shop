@@ -84,3 +84,6 @@ class ProductsRaitings(models.Model):
 
 class Subscriptions(models.Model):
     mail = models.TextField(max_length=250)
+
+# class myAccount(models.Model):
+#     productObject = models.ForeignKey()

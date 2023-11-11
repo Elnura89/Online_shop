@@ -83,42 +83,42 @@
                                 </div>
                                 <div class="product__details--info__rating d-flex align-items-center mb-15">
                                     <ul class="rating product__list--rating d-flex">
-                                        <li class="rating__list">
+                                        <li onclick="setRating(`{% url 'setRating'%}`, 1, '{{row.id}}')" class="rating__list">
                                             <span class="rating__list--icon">
                                                 <svg class="rating__list--icon__svg" xmlns="http://www.w3.org/2000/svg" width="13.105" height="13.732" viewBox="0 0 10.105 9.732">
                                                 <path data-name="star - Copy" d="M9.837,3.5,6.73,3.039,5.338.179a.335.335,0,0,0-.571,0L3.375,3.039.268,3.5a.3.3,0,0,0-.178.514L2.347,6.242,1.813,9.4a.314.314,0,0,0,.464.316L5.052,8.232,7.827,9.712A.314.314,0,0,0,8.292,9.4L7.758,6.242l2.257-2.231A.3.3,0,0,0,9.837,3.5Z" transform="translate(0 -0.018)" fill="currentColor"></path>
                                                 </svg>
                                             </span>
                                         </li>
-                                        <li class="rating__list">
+                                        <li onclick="setRating(`{% url 'setRating'%}`, 2, '{{row.id}}')" class="rating__list">
                                             <span class="rating__list--icon">
                                                 <svg class="rating__list--icon__svg" xmlns="http://www.w3.org/2000/svg" width="13.105" height="13.732" viewBox="0 0 10.105 9.732">
                                                 <path data-name="star - Copy" d="M9.837,3.5,6.73,3.039,5.338.179a.335.335,0,0,0-.571,0L3.375,3.039.268,3.5a.3.3,0,0,0-.178.514L2.347,6.242,1.813,9.4a.314.314,0,0,0,.464.316L5.052,8.232,7.827,9.712A.314.314,0,0,0,8.292,9.4L7.758,6.242l2.257-2.231A.3.3,0,0,0,9.837,3.5Z" transform="translate(0 -0.018)" fill="currentColor"></path>
                                                 </svg>
                                             </span>
                                         </li>
-                                        <li class="rating__list">
+                                        <li onclick="setRating(`{% url 'setRating'%}`, 3, '{{row.id}}')" class="rating__list">
                                             <span class="rating__list--icon">
                                                 <svg class="rating__list--icon__svg" xmlns="http://www.w3.org/2000/svg" width="13.105" height="13.732" viewBox="0 0 10.105 9.732">
                                                 <path data-name="star - Copy" d="M9.837,3.5,6.73,3.039,5.338.179a.335.335,0,0,0-.571,0L3.375,3.039.268,3.5a.3.3,0,0,0-.178.514L2.347,6.242,1.813,9.4a.314.314,0,0,0,.464.316L5.052,8.232,7.827,9.712A.314.314,0,0,0,8.292,9.4L7.758,6.242l2.257-2.231A.3.3,0,0,0,9.837,3.5Z" transform="translate(0 -0.018)" fill="currentColor"></path>
                                                 </svg>
                                             </span>
                                         </li>
-                                        <li class="rating__list">
+                                        <li onclick="setRating(`{% url 'setRating'%}`, 4, '{{row.id}}')" class="rating__list">
                                             <span class="rating__list--icon">
                                                 <svg class="rating__list--icon__svg" xmlns="http://www.w3.org/2000/svg" width="13.105" height="13.732" viewBox="0 0 10.105 9.732">
                                                 <path data-name="star - Copy" d="M9.837,3.5,6.73,3.039,5.338.179a.335.335,0,0,0-.571,0L3.375,3.039.268,3.5a.3.3,0,0,0-.178.514L2.347,6.242,1.813,9.4a.314.314,0,0,0,.464.316L5.052,8.232,7.827,9.712A.314.314,0,0,0,8.292,9.4L7.758,6.242l2.257-2.231A.3.3,0,0,0,9.837,3.5Z" transform="translate(0 -0.018)" fill="currentColor"></path>
                                                 </svg>
                                             </span>
                                         </li>
-                                        <li class="rating__list">
+                                        <li onclick="setRating(`{% url 'setRating'%}`, 5, '{{row.id}}')" class="rating__list">
                                             <span class="rating__list--icon">
                                                 <svg class="rating__list--icon__svg" xmlns="http://www.w3.org/2000/svg" width="13.105" height="13.732" viewBox="0 0 10.105 9.732">
                                                 <path data-name="star - Copy" d="M9.837,3.5,6.73,3.039,5.338.179a.335.335,0,0,0-.571,0L3.375,3.039.268,3.5a.3.3,0,0,0-.178.514L2.347,6.242,1.813,9.4a.314.314,0,0,0,.464.316L5.052,8.232,7.827,9.712A.314.314,0,0,0,8.292,9.4L7.758,6.242l2.257-2.231A.3.3,0,0,0,9.837,3.5Z" transform="translate(0 -0.018)" fill="currentColor"></path>
                                                 </svg>
                                             </span>
                                         </li>
-                                        <li class="rating__list"><span class="rating__list--text">( 5.0)</span></li>
+                                        <li class="rating__list"><span class="rating__list--text">({{points}}-рейтинг)</span></li>
                                     </ul>
                                 </div>
                                 <p class="product__details--info__desc mb-20">
@@ -159,10 +159,17 @@
                                         <button class="quickview__cart--btn primary__btn" type="submit">Add To Cart</button>  
                                     </div>
                                     <div class="product__variant--list mb-15">
+                                        {% if user.is_authenticated %}
                                         <a onclick="pressLike(`{% url 'pressLike' row.id %}`)" class="variant__wishlist--icon mb-15" title="Add to wishlist">
                                             <svg class="quickview__variant--wishlist__svg" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512"><path d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
-                                            
+                                            <a id="likesCount" type="number" class="none">{{likesCount}}</a>
                                         </a>
+                                        {% else %}
+                                        <a class="variant__wishlist--icon mb-15" title="Add to wishlist">
+                                            <svg class="quickview__variant--wishlist__svg" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512"><path d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+                                            <a id="likesCount" type="number" class="none">{{likesCount}}</a>
+                                        </a>
+                                        {% endif %}
                                         <button class="variant__buy--now__btn primary__btn" type="submit">Buy it now</button>
                                     </div>
                                     <div class="product__variant--list mb-15">

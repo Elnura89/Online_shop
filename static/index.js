@@ -5,11 +5,25 @@ function pressLike(url){
             'Content-Type': 'application/json',
             'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value, // Получаем CSRF-токен
         }
+     })
+    .then((response)=>{
+        let linkElement = document.getElementById('likesCount');
+        let likesCount = parseInt(linkElement.innerText)
+        if (response.status == '200'){
+            linkElement.innerHTML = `${likesCount+1}`
+        }
+        else{
+            linkElement.innerHTML = `${likesCount-1}`
+        }
     })
-    // .then(data=>{
-    //     alert('Запрос успешно принят')
-    // })
-    // .catch(e => {
-    //     alert('Запрос не принят')
-    // }) закоментированное это проверка работает или нет лайк
+}
+
+function setRating(url, rating, productId){
+    fetch( `${url}?id=${productId}&points=${rating}` , {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value, // Получаем CSRF-токен
+        }
+     })
 }
