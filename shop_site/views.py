@@ -13,6 +13,7 @@ from django.http import HttpResponseBadRequest
 from django.http import HttpResponse
 from django.contrib.auth import login, logout
 from django.db.models import Avg
+from django.http import JsonResponse
 
 
 
@@ -202,6 +203,12 @@ def saveMail(request):
     mail = request.POST.get('mail')
     Subscriptions.objects.create(mail=mail) 
     return redirect('index')
+
+def getRating(request, id):
+    row = Products.objects.get(id=id)
+    points = ProductsRaitings.objects.filter(productObject = row).aggregate(Avg('points'))['points__avg']
+
+    return JsonResponse({'points': points})
 
 # def Buscet(request):
 #     
