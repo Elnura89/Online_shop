@@ -85,5 +85,13 @@ class ProductsRaitings(models.Model):
 class Subscriptions(models.Model):
     mail = models.TextField(max_length=250)
 
+class ShoppingCart(models.Model):
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    productObject = models.ForeignKey(Products, on_delete=models.CASCADE)
+    quantity =  models.IntegerField()
+
 # class myAccount(models.Model):
 #     productObject = models.ForeignKey()

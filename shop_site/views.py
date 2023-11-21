@@ -192,7 +192,7 @@ def setRating(request):
         
     if isLiked:
         row = ProductsRaitings.objects.get(productObject = product, author = user)
-        row.points == points
+        row.points = points
         row.save()
         return HttpResponse("Оценка принята", status = 200)
     
@@ -210,10 +210,51 @@ def getRating(request, id):
 
     return JsonResponse({'points': points})
 
-# def Buscet(request):
-#     
-#     
-#     return render(request) 
+def setShoppingCart(request, id):
+    if not(request.user.is_authenticated):
+        return HttpResponseBadRequest('Пользователь не авторизован')
+    user = request.user
+    row = Products.objects.get(id=id)
+
+    quantity = 1
+    if request.GET.get('quantity'):
+        print(request.GET.get('quantity'))
+        quantity = int(request.GET.get('quantity'))
+    
+    isAdded = ShoppingCart.objects.filter(productObject = row, author = user).exists()
+    if isAdded:
+        cartProduct = ShoppingCart.objects.get(productObject = row, author = user)
+        cartProduct.quantity += 1
+        cartProduct.save()
+    else:
+        ShoppingCart.objects.create(productObject = row, author = user, quantity=quantity)
+    return HttpResponse("Продукт добавлен", status = 200)
+
+
+def shoppingCart(request):
+    if not(request.user.is_authenticated):
+        return HttpResponseBadRequest('Пользователь не авторизован')
+    
+    user = request.user
+    rows = ShoppingCart.objects.filter(author=user)
+    totalPrice = 0
+    
+    for row in rows:
+        totalPrice += row.quantity * row.productObject.price 
+            
+    # циклом найти сумму всеъ товаров с учетеом количества
+    # во время цикла (количество + цена товара)
+    
+    context = {
+        'rows': rows,
+        'totalPrice': totalPrice,
+    }
+    return render(request, 'cart.html', context) 
+
+def deleteShoppingCart(request, id):
+    row = ShoppingCart.objects.get(id=id)
+    row.delete()
+    return HttpResponse("Продукт удален из корзины", status = 200)
 
 # def myAccount(request):
 #     

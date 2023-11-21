@@ -34,6 +34,10 @@ urlpatterns = [
     path('mail/', saveMail, name='mail'),
     path('pressLike/<int:id>', pressLike, name='pressLike'),
     path('setRating/', setRating, name='setRating'),
+    path('getRating/<int:id>', getRating, name='getRating'),
+    path('shoppingCart/', shoppingCart, name='shoppingCart'),
+    path('setShoppingCart/<int:id>', setShoppingCart, name='setShoppingCart'),
+    path('deleteShoppingCart/<int:id>', deleteShoppingCart, name='deleteShoppingCart'),
     # path('myAccount/', myAccount, name='myAccount'),
 ]
 
