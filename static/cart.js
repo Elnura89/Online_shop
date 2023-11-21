@@ -15,16 +15,36 @@ function deleteShoppingCart(url, productId){
         });
 }
 
-function quantityChangeClick(rowId, url){
+function quantityChangeClick(operator, rowId, setProductUrl){
     // получить измененное количество(фронтенд)
     let quantityHtml = document.getElementById('quantityChange')
     let quantityInt = parseInt(quantityHtml.value)
 
+
     // изменить сумму строки с учетом нового количества(фронтенд)
     let priceHtml = document.getElementById(`price_${rowId}`)
     let rowtotalpriceHtml = document.getElementById(`row_total_price_${rowId}`)
+    
     rowtotalpriceHtml.textContent = `${parseFloat(priceHtml.innerText)  * quantityInt}`
 
-    // изменить общую сумму на странице(фронтенд)
+    let changeRequestUrl = setProductUrl
+    if (operator == 'minus'){
+        changeRequestUrl = `${setProductUrl}?isMinus=true`
+    }
+    
     // отправить в базу, сохранить(запрос джанго)
+    fetch(changeRequestUrl,{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value, // Получаем CSRF-токен
+        }})
+        .then(response => response.json())
+        .then(data => {
+            let totalsum = document.getElementById('totalsum');
+            totalsum.innerHTML = `${data['totalPrice']}`
+        })
 }
+
+
+    // изменить общую сумму на странице(фронтенд)

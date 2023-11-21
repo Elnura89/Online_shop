@@ -220,15 +220,30 @@ def setShoppingCart(request, id):
     if request.GET.get('quantity'):
         print(request.GET.get('quantity'))
         quantity = int(request.GET.get('quantity'))
-    
+
     isAdded = ShoppingCart.objects.filter(productObject = row, author = user).exists()
     if isAdded:
         cartProduct = ShoppingCart.objects.get(productObject = row, author = user)
-        cartProduct.quantity += 1
-        cartProduct.save()
+        if request.GET.get('isMinus'):
+            cartProduct.quantity -= 1
+        else:
+            cartProduct.quantity += 1
+
+        if cartProduct.quantity <= 0:
+            cartProduct.delete()
+        else:
+            cartProduct.save()
     else:
         ShoppingCart.objects.create(productObject = row, author = user, quantity=quantity)
-    return HttpResponse("Продукт добавлен", status = 200)
+
+    user = request.user
+    rows = ShoppingCart.objects.filter(author=user)
+    totalPrice = 0
+    
+    for row in rows:
+        totalPrice += row.quantity * row.productObject.price 
+
+    return JsonResponse({'totalPrice':totalPrice})
 
 
 def shoppingCart(request):
@@ -241,6 +256,9 @@ def shoppingCart(request):
     
     for row in rows:
         totalPrice += row.quantity * row.productObject.price 
+
+    newProducts = Products.objects.all().order_by('created_at')[:5]
+    
             
     # циклом найти сумму всеъ товаров с учетеом количества
     # во время цикла (количество + цена товара)
@@ -248,6 +266,7 @@ def shoppingCart(request):
     context = {
         'rows': rows,
         'totalPrice': totalPrice,
+        'newProducts': newProducts,
     }
     return render(request, 'cart.html', context) 
 
