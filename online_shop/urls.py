@@ -38,6 +38,7 @@ urlpatterns = [
     path('shoppingCart/', shoppingCart, name='shoppingCart'),
     path('setShoppingCart/<int:id>', setShoppingCart, name='setShoppingCart'),
     path('deleteShoppingCart/<int:id>', deleteShoppingCart, name='deleteShoppingCart'),
+    path('setLanguage/<str:language>/', set_lan, name='setLanguage'),
     # path('myAccount/', myAccount, name='myAccount'),
 ]
 

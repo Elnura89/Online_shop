@@ -93,5 +93,8 @@ class ShoppingCart(models.Model):
     productObject = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity =  models.IntegerField()
 
+class SliderProducts(models.Model):
+    productObject = models.ForeignKey(Products, on_delete=models.CASCADE)
+    
 # class myAccount(models.Model):
 #     productObject = models.ForeignKey()

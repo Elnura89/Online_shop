@@ -1,5 +1,5 @@
 import os
-
+from django.utils.translation import gettext_lazy as _
 from pathlib import Path
 """
 Django settings for online_shop project.
@@ -50,7 +50,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
+
+LANGUAGES = [
+    ('en', _('English')),
+    ('ru', _('Russian')),
+]
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'), #создает папку для хранения переводов
+]
+# pip install gettext библиотека для установки языков в джанго
 
 ROOT_URLCONF = 'online_shop.urls'
 
@@ -134,3 +145,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # LOGIN_REDIRECT_URL = '/'
 # LOGOUT_REDIRECT_URL = '/'
+
+'''
+{% trans "Don,t Have an Account?" %}
+{{ some_variable|trans }} - для переменных фронтенд
+
+from django.utils.translation import gettext as _
+def my_view(request):
+    output = _("Welcome to my site.")
+    return HttpResponse(output)
+
+'''

@@ -14,7 +14,7 @@ from django.http import HttpResponse
 from django.contrib.auth import login, logout
 from django.db.models import Avg
 from django.http import JsonResponse
-
+from django.utils.translation import activate
 
 
 from django.views.generic import TemplateView
@@ -37,8 +37,16 @@ class Index(TemplateView):
         
         context['category']=category
 
-        return context
+        context['reviews'] = Reviews.objects.all() #это класс в классе для вызова цикла на странице индекс клиентс тестимониал 
 
+        context['slider'] = SliderProducts.objects.all() # это через базу выбор слайдов на стр индекс в самом верху 
+        # context['slider'] = Products.objects.order_by('?')[:3] #случайный выбор слайдов на странице индекс в самом верху
+
+        context['randomImages'] = ProductsImages.objects.order_by('?')[:10] #случайный выбор картинок на странице индекс в самом низу
+
+        context['lastBlogs'] = Blogs.objects.order_by('-created_at')[:3]
+        return context
+    
 # Create your views here.
 
 # def index(request): #извлечь все select * from News;
@@ -274,6 +282,13 @@ def deleteShoppingCart(request, id):
     row = ShoppingCart.objects.get(id=id)
     row.delete()
     return HttpResponse("Продукт удален из корзины", status = 200)
+
+
+def set_lan(request, language):
+    activate(language)
+    request.session[translation.LANGUAGE_SESSION_KEY] = language
+    return redirect('index')
+
 
 # def myAccount(request):
 #     
