@@ -286,7 +286,7 @@ def deleteShoppingCart(request, id):
 
 def set_lan(request, language):
     activate(language)
-    request.session[translation.LANGUAGE_SESSION_KEY] = language
+    request.session['_language'] = language
     return redirect('index')
 
 
